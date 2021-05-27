@@ -1,5 +1,6 @@
 ---
-- hosts: database
+#- hosts: database
+- hosts: deployment
   become: true
   vars:
     mysql_root_password: pass123456789

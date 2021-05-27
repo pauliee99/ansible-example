@@ -1,10 +1,12 @@
 ---
-- hosts: webserver
+#- hosts: webserver
+- hosts: deployment
 
   vars:
     user_dir: "/home/vagrant"
     app_dir: "{{user_dir}}/django-project"
-    git_repo_url: "https://github.com/tsadimas/django3-sampe-project.git"
+#    git_repo_url: "https://github.com/tsadimas/django3-sampe-project.git"
+    git_repo_url: "https://github.com/panagiotisbellias/movie-mail-system.git"
     git_repo_branch: "main"
 
   tasks:
@@ -73,13 +75,3 @@
         name: gunicorn
         state: restarted
       become: yes
-      
-    
-
-
-    
-
-
-
-
-  

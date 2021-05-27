@@ -1,10 +1,12 @@
 ---
-- hosts: webserver
+#- hosts: webserver
+- hosts: deployment
 
   vars:
     user_dir: "/home/vagrant"
     app_dir: "{{user_dir}}/flask-project"
-    git_repo_url: "https://github.com/tsadimas/flask-example-project.git"
+#    git_repo_url: "https://github.com/tsadimas/flask-example-project.git"
+    git_repo_url: "https://github.com/panagiotisbellias/movies-management-project.git"
     git_repo_branch: "main"
   
   tasks:
@@ -17,7 +19,8 @@
       line: "{{lookup('pipe', 'ssh-keyscan -t rsa github.com')}}"
       regexp: "^github\\.com"
 
-  - name: clone flask project
+#  - name: clone flask project
+  - name: clone django project
     git:
       repo: "{{git_repo_url}}"
       version: "{{git_repo_branch}}"
@@ -25,7 +28,7 @@
       #force: yes
       dest: "{{app_dir}}"
     changed_when: true
-
+# THIS IS FOR FLASK PROJECT. CREATE A NEW PLAYBOOK LIKE THE DJANGO PLAYBOOK
 
   - name: install and activate virtual environment
     block:
