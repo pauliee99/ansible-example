@@ -4,9 +4,29 @@
   become: true
   tasks:
 
-  - name: install mysql
+  - name: install mysql-server
     apt:
       name: mysql-server
       state: present
       update_cache: yes
+
+  - name: Make sure pymysql is present
+    become: true
+    pip:
+      name: pymysql
+      state: present
+
+  - name: Create database user with name 'mydb' and password '12345' with all database privileges
+    mysql_user:
+      name: myuser
+      password: 12345
+      priv: '*.*!ALL'
+      state: present
+
+  - name: ensure mysql started
+    service:
+      name: mysql
+      state: started
+      enabled: yes
+
 
