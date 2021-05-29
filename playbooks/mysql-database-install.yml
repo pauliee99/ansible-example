@@ -1,0 +1,12 @@
+---
+- name: install mysql
+  hosts: all
+  become: true
+  tasks:
+
+  - name: install mysql
+    apt:
+      name: mysql-server
+      state: present
+      update_cache: yes
+
