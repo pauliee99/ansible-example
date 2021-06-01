@@ -10,6 +10,11 @@
       state: present
       update_cache: yes
 
+  - name: Ensure Pip is installed.
+    package:
+      name: python3-pip
+      state: present
+
   - name: Make sure pymysql is present
     become: true
     pip:
@@ -20,7 +25,10 @@
     mysql_user:
       name: myuser
       password: 12345
+      user: root
+      host_all: yes
       priv: '*.*!ALL'
+      check_implicit_admin: true
       state: present
 
   - name: ensure mysql started
