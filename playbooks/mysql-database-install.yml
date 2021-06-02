@@ -25,10 +25,7 @@
     mysql_user:
       name: myuser
       password: 12345
-      user: root
-      host_all: yes
       priv: '*.*!ALL'
-      check_implicit_admin: true
       state: present
 
   - name: ensure mysql started
