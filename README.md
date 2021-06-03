@@ -1,5 +1,4 @@
 'jenkins test 1'
-jenkins test 
 
 Procedure
 * create an inventory file (e.g. hosts or hosts.yaml) that holds the remote hosts that ansible will handle.
