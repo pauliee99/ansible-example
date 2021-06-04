@@ -9,3 +9,6 @@
 .vagrant
 *.pub
 *.log
+
+# Hosts so jenkins items can work
+hosts.yml
