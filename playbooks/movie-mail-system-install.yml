@@ -2,7 +2,7 @@
 - hosts: deploymentservers
 
   vars:
-    user_dir: "{{user_dir}}"
+    user_dir: "/home/jenkins"
     app_dir: "{{user_dir}}/movie-mail-system"
     git_repo_url: "https://github.com/panagiotisbellias/movie-mail-system.git"
     git_repo_branch: "main"
