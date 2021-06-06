@@ -1,0 +1,95 @@
+---
+- hosts: deploymentservers
+
+  vars:
+    user_dir: "/home/jenkins"
+    app_dir: "{{user_dir}}/movie-database"
+    git_repo_url: "https://github.com/pauliee99/movie-database.git"
+    git_repo_branch: "main"
+
+  tasks:
+
+
+  - name: ensure github.com is a known host
+    lineinfile:
+      dest: "{{user_dir}}/.ssh/known_hosts"
+      create: yes
+      state: present
+      line: "{{lookup('pipe', 'ssh-keyscan -t rsa github.com')}}"
+      regexp: "^github\\.com"
+
+  - name: clone django project
+    git:
+      repo: "{{git_repo_url}}"
+      version: "{{git_repo_branch}}"
+      clone: yes
+      #force: yes
+      dest: "{{app_dir}}"
+    changed_when: true
+
+  - name: copy env file
+    shell: "cp {{app_dir}}/database/database/.env.example {{app_dir}}/database/database/.env"
+
+  - name: populate ~/.env
+    ansible.builtin.lineinfile:
+      dest: "{{app_dir}}/database/database/.env"
+      state: present
+      regexp: "^SECRET_KEY="
+      line: SECRET_KEY='testkey123'
+      regexp: "^DB_NAME="
+      line: DB_NAME='movies_db'
+      regexp: "^DB_USER="
+      line: DB_USER='demo_user'
+      regexp: "^DB_PASSWORD="
+      line: DB_PASSWORD='demo_passwd'
+      regexp: "^DB_HOST="
+      line: DB_HOST='127.0.0.1'
+      regexp: "^DB_PORT="
+      line: DB_PORT=3306
+      
+
+  - name: install and activate virtual environment
+    block:
+    - name: setup virtual environment
+      pip:
+        requirements: "{{app_dir}}/requirements.txt"
+        virtualenv: "{{app_dir}}/myvenv"
+        virtualenv_python: python3
+    rescue:
+    - name: "APT - install misc packages"
+      apt:
+        name: [python3, python3-pip, python3-virtualenv, virtualenv]
+        update_cache: yes
+      become: yes
+      become_user: root
+      when: hostvars[inventory_hostname].ansible_distribution == 'Ubuntu'
+    always:
+
+    - name: setup virtual environment
+      pip:
+        requirements: "{{app_dir}}/requirements.txt"
+        virtualenv: "{{app_dir}}/myvenv"
+        virtualenv_python: python3
+    
+    - name: copy django service file
+      template:
+        src: ../files/django/gunicorn.service.j2
+        dest: "/etc/systemd/system/gunicorn.service"
+      become: yes
+      become_user: root
+      notify: gunicorn service restart
+
+    - name: ensure gunicorn service started
+      service: 
+        name: gunicorn
+        state: started
+        enabled: yes
+      become: yes
+
+
+  handlers:
+    - name: restart gunicorn
+      service:
+        name: gunicorn
+        state: restarted
+      become: yes

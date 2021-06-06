@@ -2,7 +2,7 @@
 - hosts: deploymentservers
   become: true
   vars:
-    mysql_root_password: mydbpasswd
+    mysql_root_password: devops_passwd
   
   tasks:
 
@@ -59,7 +59,7 @@
       login_host: 'localhost'
       login_user: 'root'
       login_password: "{{mysql_root_password}}"
-      name: demo 
+      name: movies_db 
       state: present
       
 
@@ -68,8 +68,8 @@
       login_host: 'localhost'
       login_user: 'root'
       login_password: "{{mysql_root_password}}" 
-      name: demo 
-      password: demo 
+      name: demo_user 
+      password: demo_passwd
       priv: demo.*:ALL 
       host: '%' 
       state: present
