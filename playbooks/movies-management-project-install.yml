@@ -2,7 +2,6 @@
 - hosts: deploymentservers
 
   vars:
-    user_dir: "/home/jenkins"
     app_dir: "{{user_dir}}/movies-management-project"
     git_repo_url: "https://github.com/panagiotisbellias/movies-management-project.git"
     git_repo_branch: "main"
