@@ -1,4 +1,3 @@
-user_dir: "/home/"
 app_port: 5000
 service:
   workingdir: "{{user_dir}}/django-project/myproject"
