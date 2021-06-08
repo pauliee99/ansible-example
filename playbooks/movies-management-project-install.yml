@@ -26,8 +26,8 @@
     changed_when: true
 
   - name: install and activate virtual environment
-    block:
-    - name: setup virtual environment
+     block:
+     - name: setup virtual environment
       pip:
         requirements: "{{app_dir}}/requirements.txt"
         virtualenv: "{{app_dir}}/myvenv"
