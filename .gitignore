@@ -12,3 +12,5 @@
 
 # Hosts so jenkins items can work
 hosts.yml
+
+gp.sh
