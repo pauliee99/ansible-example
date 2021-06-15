@@ -43,7 +43,7 @@
 
     - name: Create mysql container
       docker_container:
-        name: "{{ mysql_container_name }}{{ item }}"
+        name: "{{ mysql_container_name }}"
         image: "{{ mysql_container_image }}"
      #   command: "{{ default_container_command }}"
         state: present
@@ -55,7 +55,7 @@
 
     - name: Create db container
       docker_container:
-        name: "{{ db_container_name }}{{ item }}"
+        name: "{{ db_container_name }}"
         image: "{{ db_container_image }}"
      #   command: "{{ default_container_command }}"
         state: present
@@ -67,7 +67,7 @@
 
     - name: Create mailing container
       docker_container:
-        name: "{{ mail_container_name }}{{ item }}"
+        name: "{{ mail_container_name }}"
         image: "{{ mail_container_image }}"
      #   command: "{{ default_container_command }}"
         state: present
@@ -79,7 +79,7 @@
 
     - name: Create main container
       docker_container:
-        name: "{{ project_container_name }}{{ item }}"
+        name: "{{ project_container_name }}"
         image: "{{ project_container_image }}"
      #   command: "{{ default_container_command }}"
         state: present
