@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: deploymentservers
   become: true
   vars:
     mysql_container_name: MySQLserver
@@ -47,6 +47,8 @@
         image: "{{ mysql_container_image }}"
      #   command: "{{ default_container_command }}"
         state: present
+        ports:
+         - "3306:3306"
 
     - name: Pull db Docker image
       docker_image:
@@ -59,6 +61,8 @@
         image: "{{ db_container_image }}"
      #   command: "{{ default_container_command }}"
         state: present
+        ports:
+         - "3000:3000"
 
     - name: Pull mailing Docker image
       docker_image:
@@ -71,6 +75,8 @@
         image: "{{ mail_container_image }}"
      #   command: "{{ default_container_command }}"
         state: present
+        ports:
+         - "5000:5000"
 
     - name: Pull Main Docker image
       docker_image:
@@ -83,3 +89,29 @@
         image: "{{ project_container_image }}"
      #   command: "{{ default_container_command }}"
         state: present
+        ports:
+         - "80:8080"
+
+    - name: Starting mysql container
+      docker_container:
+        name: "{{ mysql_container_name }}"
+        image: "{{ mysql_container_image }}"
+        state: started
+
+    - name: Starting db container
+      docker_container:
+        name: "{{ db_container_name }}"
+        image: "{{ db_container_image }}"
+        state: started
+
+    - name:Starting mail container
+      docker_container:
+        name: "{{ mail_container_name }}"
+        image: "{{ mail_container_image }}"
+        state: started
+
+    - name:Starting project container
+      docker_container:
+        name: "{{ project_container_name }}"
+        image: "{{ project_container_image }}"
+        state: started
