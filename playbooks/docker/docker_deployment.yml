@@ -64,7 +64,7 @@
         ports:
          - "3000:3000"
         volumes_from:
-         - {{ mysql_container_name }}
+         - "{{ mysql_container_name }}"
 
     - name: Pull mailing Docker image
       docker_image:
@@ -102,10 +102,10 @@
         image: "{{ mysql_container_image }}"
         state: started
         env:
-            MYSQL_ROOT_PASSWORD: {{ DB_ROOT_PASSWD }}
-            MYSQL_DATABASE: {{ DB_NAME }}
-            MYSQL_USER: {{ DB_USER }}
-            MYSQL_PASSWORD: {{ DB_PASSWD }}
+            MYSQL_ROOT_PASSWORD: "{{ DB_ROOT_PASSWD }}"
+            MYSQL_DATABASE: "{{ DB_NAME }}"
+            MYSQL_USER: "{{ DB_USER }}"
+            MYSQL_PASSWORD: "{{ DB_PASSWD }}"
 
     - name: Starting db container
       docker_container:
@@ -113,12 +113,12 @@
         image: "{{ db_container_image }}"
         state: started
         env:
-            SECRET_KEY: {{ DB_SECRET_KEY }}
-            DB_NAME: {{ DB_NAME }}
-            DB_USER: {{ DB_USER }}
-            DB_PASSWORD: {{ DB_PASSWD }}
-            DB_HOST: {{ DB_HOST }}
-            DB_PORT: {{ DB_PORT }}
+            SECRET_KEY: "{{ DB_SECRET_KEY }}"
+            DB_NAME: "{{ DB_NAME }}"
+            DB_USER: "{{ DB_USER }}"
+            DB_PASSWORD: "{{ DB_PASSWD }}"
+            DB_HOST: "{{ DB_HOST }}"
+            DB_PORT: "{{ DB_PORT }}"
 
     - name: Starting mail container
       docker_container:
@@ -126,11 +126,11 @@
         image: "{{ mail_container_image }}"
         state: started
         env:
-            SECRET_KEY: {{ MAIL_SECRET_KEY }}
+            SECRET_KEY: "{{ MAIL_SECRET_KEY }}"
             DATABASE_URL: 'sqlite:///./db.sqlite3'
-            EMAIL_USER: {{ MAIL_USER }}
-            EMAIL_PASSWD: {{ MAIL_PASSWD }}
-            EMAIL_DB_URL_PORT: {{ DB_FULL_URL }}
+            EMAIL_USER: "{{ MAIL_USER }}"
+            EMAIL_PASSWD: "{{ MAIL_PASSWD }}"
+            EMAIL_DB_URL_PORT: "{{ DB_FULL_URL }}"
 
     - name: Starting project container
       docker_container:
@@ -138,7 +138,7 @@
         image: "{{ project_container_image }}"
         state: started
         env:
-            SECRET_KEY: {{ MOVIES_SECRET_KEY }}
+            SECRET_KEY: "{{ MOVIES_SECRET_KEY }}"
             DATABASE_URL: 'sqlite:///./db.sqlite3'
-            MOVIES_DB_URL_PORT: {{ DB_FULL_URL }}
-            EMAIL_SYSTEM_URL_PORT: {{ MAIL_URL }}
+            MOVIES_DB_URL_PORT: "{{ DB_FULL_URL }}"
+            EMAIL_SYSTEM_URL_PORT: "{{ MAIL_URL }}"
