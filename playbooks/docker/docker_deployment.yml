@@ -45,10 +45,11 @@
       docker_container:
         name: "{{ mysql_container_name }}"
         image: "{{ mysql_container_image }}"
-     #   command: "{{ default_container_command }}"
         state: present
         ports:
          - "3306:3306"
+        volumes:
+         - /mysql_data
 
     - name: Pull db Docker image
       docker_image:
@@ -59,10 +60,11 @@
       docker_container:
         name: "{{ db_container_name }}"
         image: "{{ db_container_image }}"
-     #   command: "{{ default_container_command }}"
         state: present
         ports:
          - "3000:3000"
+        volumes_from:
+         - {{ mysql_container_name }}
 
     - name: Pull mailing Docker image
       docker_image:
@@ -73,10 +75,11 @@
       docker_container:
         name: "{{ mail_container_name }}"
         image: "{{ mail_container_image }}"
-     #   command: "{{ default_container_command }}"
         state: present
         ports:
          - "5000:5000"
+        volumes:
+         - /mail_data
 
     - name: Pull Main Docker image
       docker_image:
@@ -87,31 +90,55 @@
       docker_container:
         name: "{{ project_container_name }}"
         image: "{{ project_container_image }}"
-     #   command: "{{ default_container_command }}"
         state: present
         ports:
          - "80:8080"
+        volumes:
+         - /movies_data
 
     - name: Starting mysql container
       docker_container:
         name: "{{ mysql_container_name }}"
         image: "{{ mysql_container_image }}"
         state: started
+        env:
+            MYSQL_ROOT_PASSWORD: {{ DB_ROOT_PASSWD }}
+            MYSQL_DATABASE: {{ DB_NAME }}
+            MYSQL_USER: {{ DB_USER }}
+            MYSQL_PASSWORD: {{ DB_PASSWD }}
 
     - name: Starting db container
       docker_container:
         name: "{{ db_container_name }}"
         image: "{{ db_container_image }}"
         state: started
+        env:
+            SECRET_KEY: {{ DB_SECRET_KEY }}
+            DB_NAME: {{ DB_NAME }}
+            DB_USER: {{ DB_USER }}
+            DB_PASSWORD: {{ DB_PASSWD }}
+            DB_HOST: {{ DB_HOST }}
+            DB_PORT: {{ DB_PORT }}
 
     - name:Starting mail container
       docker_container:
         name: "{{ mail_container_name }}"
         image: "{{ mail_container_image }}"
         state: started
+        env:
+            SECRET_KEY: {{ MAIL_SECRET_KEY }}
+            DATABASE_URL: 'sqlite:///./db.sqlite3'
+            EMAIL_USER: {{ MAIL_USER }}
+            EMAIL_PASSWD: {{ MAIL_PASSWD }}
+            EMAIL_DB_URL_PORT: {{ DB_FULL_URL }}
 
     - name:Starting project container
       docker_container:
         name: "{{ project_container_name }}"
         image: "{{ project_container_image }}"
         state: started
+        env:
+            SECRET_KEY: {{ MOVIES_SECRET_KEY }}
+            DATABASE_URL: 'sqlite:///./db.sqlite3'
+            MOVIES_DB_URL_PORT: {{ DB_FULL_URL }}
+            EMAIL_SYSTEM_URL_PORT: {{ MAIL_URL }}
