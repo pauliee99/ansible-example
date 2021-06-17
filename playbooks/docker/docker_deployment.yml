@@ -120,7 +120,7 @@
             DB_HOST: {{ DB_HOST }}
             DB_PORT: {{ DB_PORT }}
 
-    - name:Starting mail container
+    - name: Starting mail container
       docker_container:
         name: "{{ mail_container_name }}"
         image: "{{ mail_container_image }}"
@@ -132,7 +132,7 @@
             EMAIL_PASSWD: {{ MAIL_PASSWD }}
             EMAIL_DB_URL_PORT: {{ DB_FULL_URL }}
 
-    - name:Starting project container
+    - name: Starting project container
       docker_container:
         name: "{{ project_container_name }}"
         image: "{{ project_container_image }}"
