@@ -1,0 +1,57 @@
+---
+- hosts: deploymentservers
+  become: true
+  vars:
+    project_container_name: movies-management-project
+    project_container_image: belpanos/movie-main-system
+
+  tasks:
+    - name: Install aptitude using apt
+      apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+
+    - name: Install required system packages
+      apt: name={{ item }} state=latest update_cache=yes
+      loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
+
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu xenial stable
+        state: present
+
+    - name: Update apt and install docker-ce
+      apt: update_cache=yes name=docker-ce state=latest
+
+    - name: Install Docker Module for Python
+      pip:
+        name: docker
+
+    - name: Pull Main Docker image
+      docker_image:
+        name: "{{ project_container_image }}"
+        source: pull
+
+    - name: Create main container
+      docker_container:
+        name: "{{ project_container_name }}"
+        image: "{{ project_container_image }}"
+        state: present
+        ports:
+         - "80:8080"
+        volumes:
+         - /movies_data
+
+    - name: Starting project container
+      docker_container:
+        name: "{{ project_container_name }}"
+        image: "{{ project_container_image }}"
+        state: started
+        env:
+            SECRET_KEY: "{{ MOVIES_SECRET_KEY }}"
+            DATABASE_URL: 'sqlite:///./db.sqlite3'
+            MOVIES_DB_URL_PORT: "{{ DB_FULL_URL }}"
+            EMAIL_SYSTEM_URL_PORT: "{{ MAIL_URL }}"
