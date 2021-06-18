@@ -1,5 +1,6 @@
 ---
 - hosts: deploymentservers
+  sudo: yes
   become: true
   vars:
     mysql_container_name: MySQLserver
