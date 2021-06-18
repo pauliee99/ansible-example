@@ -1,11 +1,11 @@
 app_port: 5000
 service:
-  workingdir: "{{user_dir}}/django-project/myproject"
-  execstart: "{{user_dir}}/django-project/myvenv/bin/gunicorn --access-logfile - --workers 3 --bind 0.0.0.0:8000 myproject.wsgi:application"
+  workingdir: "{{user_dir}}/django-project/movie-mail-system"
+  execstart: "{{user_dir}}/django-project/myvenv/bin/gunicorn --access-logfile - --workers 3 --bind 0.0.0.0:8000 mailing_system.wsgi:application"
 
 djangoservice:
-  workingdir: "{{user_dir}}/django-project/myproject"
-  execstart: "{{user_dir}}/django-project/myvenv/bin/gunicorn --access-logfile - --workers 3 --bind 0.0.0.0:8000 myproject.wsgi:application"
+  workingdir: "{{user_dir}}/django-project/movie-mail-system"
+  execstart: "{{user_dir}}/django-project/myvenv/bin/gunicorn --access-logfile - --workers 3 --bind 0.0.0.0:8000 mailing_system.wsgi:application"
 
 
 
