@@ -63,7 +63,35 @@
         requirements: "{{app_dir}}/requirements.txt"
         virtualenv: "{{app_dir}}/myvenv"
         virtualenv_python: python3
+
+    - name: make migrations
+      shell: ". {{ app_dir }}/.env; {{ virtualenv_python }} {{ app_dir }}/manage.py makemigrations "
+      become: yes
     
+    - name: Migrate database
+      django_manage: app_path={{ app_dir }}
+                                 command=migrate
+                                 virtualenv={{ virtualenv }}
+
+    - name: Get all static files
+      django_manage: app_path={{ app_dir }}
+                                 command=collectstatic
+                                 virtualenv={{ virtualenv }}
+      become: yes
+
+    - name: Create a deploy directory
+      file: path='{{ app_dir }}/deploy' state=directory
+      become: yes
+
+    - name: Create the gunicorn_start script for running our app from systemd service
+      template: src=gunicorn_start
+                    dest={{ deploy_dir }}/gunicorn_start
+      become: yes
+
+    - name: Make the gunicorn_start script executable
+      raw: cd {{ deploy_dir }}; chmod +x gunicorn_start
+      become: yes
+
     - name: copy django service file
       template:
         src: ../files/django/gunicorn.service.j2
