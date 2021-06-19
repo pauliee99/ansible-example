@@ -1,21 +1,25 @@
 app_port: 5000
-service:
-  workingdir: "{{user_dir}}/django-project/movie-mail-system"
-  execstart: "{{user_dir}}/django-project/myvenv/bin/gunicorn --access-logfile - --workers 3 --bind 0.0.0.0:8000 mailing_system.wsgi:application"
+movie_database:
+  workingdir: "{{user_dir}}/movie-database"
+  execstart: "{{user_dir}}/movie-database/myvenv/bin/gunicorn --access-logfile - --workers 3 --bind 0.0.0.0:3000 database.wsgi:application"
 
-djangoservice:
-  workingdir: "{{user_dir}}/django-project/movie-mail-system"
-  execstart: "{{user_dir}}/django-project/myvenv/bin/gunicorn --access-logfile - --workers 3 --bind 0.0.0.0:8000 mailing_system.wsgi:application"
+movie_mail_system:
+  workingdir: "{{user_dir}}/movie-mail-system"
+  execstart: "{{user_dir}}/movie-mail-system/myvenv/bin/gunicorn --access-logfile - --workers 3 --bind 0.0.0.0:5000 mailing_system.wsgi:application"
+
+movies_management_project:
+  workingdir: "{{user_dir}}/movies-management-project"
+  execstart: "{{user_dir}}/movies-management-project/myvenv/bin/gunicorn --access-logfile - --workers 3 --bind 0.0.0.0:8080 movies.wsgi:application"
 
 
+#app:
+#  env:
+#    SQLALCHEMY_DATABASE_URI: postgresql://demouser:pass123@db01/demodb
+#    SQLALCHEMY_TRACK_MODIFICATIONS: False
+#    SECRET_KEY: sfvgbrh212131
 
-app:
-  env:
-    SQLALCHEMY_DATABASE_URI: postgresql://demouser:pass123@db01/demodb
-    SQLALCHEMY_TRACK_MODIFICATIONS: False
-    SECRET_KEY: sfvgbrh212131
+#django:
+#  env:
+#    SECRET_KEY: 'sfvgbrh212131'
+#    DATABASE_URL: 'postgresql://demouser:pass123@db01/demodb'
 
-django:
-  env:
-    SECRET_KEY: 'sfvgbrh212131'
-    DATABASE_URL: 'postgresql://demouser:pass123@db01/demodb'
