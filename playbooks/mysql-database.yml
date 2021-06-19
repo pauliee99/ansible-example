@@ -1,32 +1,26 @@
 ---
 - hosts: deploymentservers
   become: true
-  vars:
-    mysql_root_password: devops_passwd
   
   tasks:
 
   - name: print mysql password
     debug:
-      msg: mysql root pass is {{mysql_root_password}}
+      msg: mysql root pass is "{{ DB_ROOT_PASSWD }}"
 
   - name: Specify MySQL root password before installing
     debconf: 
       name: 'mysql-server'
       question: 'mysql-server/root_password' 
-      value: '{{mysql_root_password | quote}}' 
+      value: "{{ DB_ROOT_PASSWD | quote}" 
       vtype: 'password'
-    # vars: 
-    #   mysql_root_password: pass0
 
   - name: Confirm MySQL root password before installing
     debconf: 
       name: 'mysql-server' 
       question: 'mysql-server/root_password_again'
-      value: '{{mysql_root_password | quote}}'
+      value: "{{ DB_ROOT_PASSWD | quote}}"
       vtype: 'password'
-    # vars: 
-    #   mysql_root_password: pass0
     
   - name: install mysql-server
     apt: 
@@ -54,22 +48,22 @@
       state: present
       update_cache: yes 
 
-  - name: create demo database
+  - name: create database
     mysql_db: 
       login_host: 'localhost'
       login_user: 'root'
-      login_password: "{{mysql_root_password}}"
-      name: movies_db 
+      login_password: "{{ DB_ROOT_PASSWD }}"
+      name: "{{ DB_NAME }}"
       state: present
       
 
-  - name: create demo user
+  - name: create user
     mysql_user:
       login_host: 'localhost'
       login_user: 'root'
-      login_password: "{{mysql_root_password}}" 
-      name: demo_user 
-      password: demo_passwd
+      login_password: "{{ DB_ROOT_PASSWD }}" 
+      name: "{{ DB_USER }}"
+      password: "{{ DB_PASSWD }}"
       priv: demo.*:ALL 
       host: '%' 
       state: present

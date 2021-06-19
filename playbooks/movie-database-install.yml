@@ -2,14 +2,11 @@
 - hosts: deploymentservers
 
   vars:
-    user_dir: "/home/jenkins"
     app_dir: "{{user_dir}}/movie-database"
     git_repo_url: "https://github.com/pauliee99/movie-database.git"
     git_repo_branch: "main"
 
   tasks:
-
-
   - name: ensure github.com is a known host
     lineinfile:
       dest: "{{user_dir}}/.ssh/known_hosts"
@@ -23,7 +20,6 @@
       repo: "{{git_repo_url}}"
       version: "{{git_repo_branch}}"
       clone: yes
-      #force: yes
       dest: "{{app_dir}}"
     changed_when: true
 
@@ -35,19 +31,18 @@
       dest: "{{app_dir}}/database/database/.env"
       state: present
       regexp: "^SECRET_KEY="
-      line: SECRET_KEY='testkey123'
+      line: SECRET_KEY="{{ DB_SECRET_KEY }}"
       regexp: "^DB_NAME="
-      line: DB_NAME='movies_db'
+      line: DB_NAME="{{ DB_NAME }}"
       regexp: "^DB_USER="
-      line: DB_USER='demo_user'
+      line: DB_USER="{{ DB_USER }}"
       regexp: "^DB_PASSWORD="
-      line: DB_PASSWORD='demo_passwd'
+      line: DB_PASSWORD="{{ DB_PASSWD }}"
       regexp: "^DB_HOST="
-      line: DB_HOST='127.0.0.1'
+      line: DB_HOST="{{ DB_HOST }}"
       regexp: "^DB_PORT="
-      line: DB_PORT=3306
+      line: DB_PORT="{{ DB_PORT }}"
       
-
   - name: install and activate virtual environment
     block:
     - name: setup virtual environment

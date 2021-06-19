@@ -25,6 +25,22 @@
       dest: "{{app_dir}}"
     changed_when: true
 
+  - name: copy env file
+    shell: "cp {{app_dir}}/movies/movies/.env.example {{app_dir}}/movies/movies/.env"
+
+  - name: populate ~/.env
+    ansible.builtin.lineinfile:
+      dest: "{{app_dir}}/movies/movies/.env"
+      state: present
+      regexp: "^SECRET_KEY="
+      line: SECRET_KEY="{{ MOVIES_SECRET_KEY }}"
+      regexp: "^DATABASE_URL="
+      line: DATABASE_URL='sqlite:///./db.sqlite3'
+      regexp: "^MOVIES_DB_URL_PORT="
+      line: MOVIES_DB_URL_PORT="{{ DB_FULL_URL }}"
+      regexp: "^EMAIL_SYSTEM_URL_PORT="
+      line: EMAIL_SYSTEM_URL_PORT="{{ MAIL_URL }}"
+
   - name: install and activate virtual environment
     block:
     - name: setup virtual environment
