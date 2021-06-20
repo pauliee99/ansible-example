@@ -50,7 +50,7 @@
 
   - name: create database
     mysql_db: 
-      login_host: '127.0.0.1'
+      login_host: 'http://127.0.0.1'
       login_user: 'root'
       login_password: "{{ DB_ROOT_PASSWD }}"
       name: "{{ DB_NAME }}"
