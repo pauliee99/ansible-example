@@ -40,8 +40,6 @@
         name: "{{ project_container_name }}"
         image: "{{ project_container_image }}"
         state: present
-        published_ports:
-         - 80:8080
         volumes:
          - /movies_data
 
@@ -50,6 +48,8 @@
         name: "{{ project_container_name }}"
         image: "{{ project_container_image }}"
         state: started
+        ports:
+         - 80:8080
         env:
             SECRET_KEY: "{{ MOVIES_SECRET_KEY }}"
             DATABASE_URL: 'sqlite:///./db.sqlite3'
