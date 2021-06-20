@@ -12,7 +12,7 @@
     debconf: 
       name: 'mysql-server'
       question: 'mysql-server/root_password' 
-      value: "{{ DB_ROOT_PASSWD | quote}" 
+      value: "{{ DB_ROOT_PASSWD | quote}}" 
       vtype: 'password'
 
   - name: Confirm MySQL root password before installing
