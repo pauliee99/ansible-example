@@ -34,7 +34,7 @@ ansible-playbook playbooks/use-api-key.yaml --ask-vault-pass
 and you will be asked to provide the password
 * edit the encrypoted file with
 ```bash
-ansible-vault edit playbooks/vars/api_key.ym
+ansible-vault edit playbooks/vars/api_key.yml
 ```
 * use stored password to decrypt
 create a file that holds the password with 600 permissions
