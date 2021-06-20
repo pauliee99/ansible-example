@@ -33,7 +33,7 @@
     - name: Pull Main Docker image
       docker_image:
         name: "{{ project_container_image }}"
-        source: pull
+        # source: pull
 
     - name: Create main container
       docker_container:
