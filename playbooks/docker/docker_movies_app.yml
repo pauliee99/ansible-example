@@ -33,7 +33,7 @@
     - name: Pull Main Docker image
       docker_image:
         name: "{{ project_container_image }}"
-        # source: pull
+        source: pull
 
     - name: Create main container
       docker_container:
@@ -55,3 +55,4 @@
             DATABASE_URL: 'sqlite:///./db.sqlite3'
             MOVIES_DB_URL_PORT: "{{ DB_FULL_URL }}"
             EMAIL_SYSTEM_URL_PORT: "{{ MAIL_URL }}"
+            ALLOWED_HOSTS: "{{ ALLOWED_HOSTS }}"
