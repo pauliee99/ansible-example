@@ -3,7 +3,7 @@
   become: true
   vars:
     project_container_name: movies-management-project
-    project_container_image: belpanos/movie-main-system
+    project_container_image: belpanos/movies-django
 
   tasks:
     - name: Install aptitude using apt
