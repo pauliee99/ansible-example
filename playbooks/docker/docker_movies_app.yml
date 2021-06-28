@@ -41,6 +41,7 @@
         image: "{{ project_container_image }}"
         state: present
         volumes:
+         - /app/static
          - /movies_data
 
     - name: Starting project container
