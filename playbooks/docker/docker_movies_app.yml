@@ -41,7 +41,7 @@
         image: "{{ project_container_image }}"
         state: present
         volumes:
-         - /app/static
+         - app/static
          - /movies_data
 
     - name: Starting project container
@@ -57,3 +57,4 @@
             MOVIES_DB_URL_PORT: "{{ DB_FULL_URL }}"
             EMAIL_SYSTEM_URL_PORT: "{{ MAIL_URL }}"
             ALLOWED_HOSTS: "{{ ALLOWED_HOSTS }}"
+        command: ["python", "manage.py", "migrate"]
