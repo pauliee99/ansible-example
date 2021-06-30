@@ -44,12 +44,12 @@
          - app/static
          - /movies_data
 
-    - name: Make migrations
-      docker_container:
-        name: "{{ project_container_name }}"
-        image: "{{ project_container_image }}"
-        state: present
-        command: ["python", "manage.py", "migrate"]
+    # - name: Make migrations
+    #  docker_container:
+    #    name: "{{ project_container_name }}"
+    #    image: "{{ project_container_image }}"
+    #    state: present
+    #    command: ["python", "manage.py", "migrate"]
 
     - name: Starting project container
       docker_container:
