@@ -35,21 +35,22 @@
         name: "{{ project_container_image }}"
         source: pull
 
+    - name: Create static volume
+      docker_volume:
+        name: /app/static
+
+    - name: Create data volume
+      docker_volume:
+        name: /movies_data
+
     - name: Create main container
       docker_container:
         name: "{{ project_container_name }}"
         image: "{{ project_container_image }}"
         state: present
         volumes:
-         - app/static
+         - /app/static
          - /movies_data
-
-    # - name: Make migrations
-    #  docker_container:
-    #    name: "{{ project_container_name }}"
-    #    image: "{{ project_container_image }}"
-    #    state: present
-    #    command: ["python", "manage.py", "migrate"]
 
     - name: Starting project container
       docker_container:
