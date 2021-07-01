@@ -46,7 +46,6 @@
         name: "{{ project_container_name }}"
         image: "{{ project_container_image }}"
         state: present
-        command: docker exec -it "{{ project_container_name }}" bash -l -c migrations.sh
 
     - name: Starting project container
       docker_container:
