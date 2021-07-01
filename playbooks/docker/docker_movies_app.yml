@@ -41,12 +41,6 @@
         image: "{{ project_container_image }}"
         state: present
 
-    - name: Make django migrations
-      docker_container:
-        name: "{{ project_container_name }}"
-        image: "{{ project_container_image }}"
-        state: present
-
     - name: Starting project container
       docker_container:
         name: "{{ project_container_name }}"
