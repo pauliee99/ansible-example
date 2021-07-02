@@ -54,3 +54,6 @@
             MOVIES_DB_URL_PORT: "{{ DB_FULL_URL }}"
             EMAIL_SYSTEM_URL_PORT: "{{ MAIL_URL }}"
             ALLOWED_HOSTS: "{{ ALLOWED_HOSTS }}"
+
+    - name: Create superuser
+      command: docker exec -it "{{ project_container_name }}" bash -c 'python manage.py createsuperuser --username belpanos --password gk7cjsva --email belliaspanagiotis@gmail.com'
