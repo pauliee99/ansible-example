@@ -56,4 +56,4 @@
             ALLOWED_HOSTS: "{{ ALLOWED_HOSTS }}"
 
     - name: Create superuser
-      command: docker exec -it "{{ project_container_name }}" bash -c 'python manage.py createsuperuser --username belpanos --password gk7cjsva --email belliaspanagiotis@gmail.com'
+      command: docker exec -it "{{ project_container_name }}" bash -c 'python manage.py createsuperuser --username belpanos --password 'gk7cjsva' --email belliaspanagiotis@gmail.com'
